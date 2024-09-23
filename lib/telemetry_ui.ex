@@ -25,7 +25,7 @@ defmodule TelemetryUI do
         {"System", [last_value("vm.memory.total", unit: {:byte, :megabyte})]}
       ],
       theme: %{title: "Metrics"},
-      backend: 
+      backend:
         %TelemetryUI.Backend.EctoPostgres{
           repo: MyApp.Repo,
           pruner_threshold: [months: -1],
@@ -178,6 +178,7 @@ defmodule TelemetryUI do
     Supervisor.init(children, strategy: :one_for_one)
   end
 
+  @spec metric_data(atom() | binary(), any(), any()) :: list()
   def metric_data(name, metric, filters) do
     TelemetryUI.Scraper.metric(backend(name), metric, filters)
   end
